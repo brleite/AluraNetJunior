@@ -13,9 +13,9 @@ namespace CasaDoCodigo.Repositories
         {
         }
 
-        public IList<Categoria> GetCategorias()
+        public async Task<IList<Categoria>> GetCategorias()
         {
-            return dbSet.ToList();
+            return await dbSet.ToListAsync();
         }
 
         public async Task<Categoria> SaveCategoria(string nome)

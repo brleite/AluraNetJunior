@@ -29,18 +29,17 @@ namespace CasaDoCodigo.Controllers
             return View(produtoRepository.GetProdutos());
         }
 
-        public IActionResult BuscaDeProdutos(/*BuscaDeProdutosViewModel buscaDeProdutos*/)
+        public async Task<IActionResult> BuscaDeProdutos(BuscaDeProdutosViewModel buscaDeProdutosVM)
         {
-            //if (String.IsNullOrWhiteSpace(buscaDeProdutos.Pesquisa))
-            //{
-            //    buscaDeProdutos.Produtos = await produtoRepository.GetProdutos();
-            //    return View(buscaDeProdutos);
-            //}
+            if (String.IsNullOrWhiteSpace(buscaDeProdutosVM.Pesquisa))
+            {
+                buscaDeProdutosVM.Produtos = await produtoRepository.GetProdutos();
+            }
+            else
+            {
+                buscaDeProdutosVM.Produtos = await produtoRepository.GetProdutos(buscaDeProdutosVM.Pesquisa);
+            }
 
-            var buscaDeProdutosVM = new BuscaDeProdutosViewModel();
-            buscaDeProdutosVM.Produtos = produtoRepository.GetProdutos();
-
-            //buscaDeProdutos.Produtos = await produtoRepository.GetProdutos(buscaDeProdutos.Pesquisa);
             return base.View(buscaDeProdutosVM);
         }
 
