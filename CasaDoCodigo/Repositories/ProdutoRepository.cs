@@ -9,8 +9,12 @@ namespace CasaDoCodigo.Repositories
 {
     public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
     {
-        public ProdutoRepository(ApplicationContext contexto) : base(contexto)
+        private ICategoriaRepository _categoriaRepository;
+
+        public ProdutoRepository(ApplicationContext contexto,
+            ICategoriaRepository categoriaRepository) : base(contexto)
         {
+            this._categoriaRepository = categoriaRepository;
         }
 
         public IList<Produto> GetProdutos()
@@ -24,7 +28,11 @@ namespace CasaDoCodigo.Repositories
             {
                 if (!dbSet.Where(p => p.Codigo == livro.Codigo).Any())
                 {
-                    dbSet.Add(new Produto(livro.Codigo, livro.Nome, livro.Preco));
+                    var categoria = await this._categoriaRepository.SaveCategoria(livro.Categoria);
+
+                    var produto = new Produto(livro.Codigo, livro.Nome, livro.Preco, categoria);
+                    
+                    dbSet.Add(produto);
                 }
             }
             await contexto.SaveChangesAsync();
