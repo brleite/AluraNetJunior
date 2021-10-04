@@ -29,6 +29,21 @@ namespace CasaDoCodigo.Controllers
             return View(produtoRepository.GetProdutos());
         }
 
+        public IActionResult BuscaDeProdutos(/*BuscaDeProdutosViewModel buscaDeProdutos*/)
+        {
+            //if (String.IsNullOrWhiteSpace(buscaDeProdutos.Pesquisa))
+            //{
+            //    buscaDeProdutos.Produtos = await produtoRepository.GetProdutos();
+            //    return View(buscaDeProdutos);
+            //}
+
+            var buscaDeProdutosVM = new BuscaDeProdutosViewModel();
+            buscaDeProdutosVM.Produtos = produtoRepository.GetProdutos();
+
+            //buscaDeProdutos.Produtos = await produtoRepository.GetProdutos(buscaDeProdutos.Pesquisa);
+            return base.View(buscaDeProdutosVM);
+        }
+
         public async Task<IActionResult> Carrinho(string codigo)
         {
             if (!string.IsNullOrEmpty(codigo))
